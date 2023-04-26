@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="comment-section">
+        <h2>Comments</h2>
+        <ul id="comment-list"></ul>
+        <form id="comment-form">
+          <label>Name:</label>
+          <input type="text" id="name-input" required>
+          <label>Comment:</label>
+          <textarea id="comment-input" required></textarea>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+      <!--<a href="https://www.youtube.com/watch?v=0s6A0hkg11U&t=4574s">youtube</a>-->
+    <script>
+        // 댓글 목록을 저장할 배열
+var comments = [];
+
+// 이전에 저장된 댓글 데이터 불러오기
+if (localStorage.getItem('comments')) {
+  comments = JSON.parse(localStorage.getItem('comments'));
+}
+
+// DOM 요소 가져오기
+var commentList = document.getElementById('comment-list');
+var commentForm = document.getElementById('comment-form');
+var nameInput = document.getElementById('name-input');
+var commentInput = document.getElementById('comment-input');
+
+// 댓글 추가 함수
+function addComment(name, comment) {
+  var newComment = document.createElement('li');
+  newComment.innerHTML = '<strong>' + name + ':</strong> ' + comment;
+  commentList.appendChild(newComment);
+}
+
+// 댓글 제출 이벤트 핸들러
+commentForm.addEventListener('submit', function(event) {
+  event.preventDefault(); // 폼 제출 취소
+
+  // 입력 값 가져오기
+  var name = nameInput.value;
+  var comment = commentInput.value;
+
+  // 댓글 추가 및 배열에 저장
+  addComment(name, comment);
+  comments.push({ name: name, comment: comment });
+
+  // 댓글 데이터 로컬 스토리지에 저장
+  localStorage.setItem('comments', JSON.stringify(comments));
+
+  // 입력 폼 초기화
+  nameInput.value = '';
+  commentInput.value = '';
+});
+
+// 초기 댓글 로드
+comments.forEach(function(comment) {
+  addComment(comment.name, comment.comment);
+});
+
+    </script>      
+</body>
+</html>
